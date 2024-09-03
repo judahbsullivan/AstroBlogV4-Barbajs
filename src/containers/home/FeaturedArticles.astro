@@ -1,0 +1,36 @@
+---
+import ArticleCard from "@/components/ui/articleCard.astro";
+import { Button } from "@/components/ui/button";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+import { sanityClient } from "sanity:client";
+
+const title = "Latest Articles";
+
+const articles = await sanityClient.fetch(`*[_type == "articles" && defined(slug)] | order(publishedAt desc){
+  ...
+}`);
+
+const posts = articles.slice(0, 4);
+---
+
+<SectionLayout
+  title={title}
+  slotClass="flex flex-col gap-10"
+  sectionClass="gap-12"
+  mainSection={false}
+>
+  <div class="grid md:grid-cols-2 gap-6">
+    {
+      posts.map((article: any) => (
+        <ArticleCard
+          src={article.coverImage}
+          title={article.title}
+          slug={`/blog/${article.slug.current}`}
+          description={article.excerpt}
+          date={article.publishedAt}
+        />
+      ))
+    }
+  </div>
+  <Button className="max-w-fit"> View All Articles </Button>
+</SectionLayout>

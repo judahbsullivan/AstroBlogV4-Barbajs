@@ -1,0 +1,25 @@
+---
+import ArticleCard from "@/components/ui/articleCard.astro";
+import SectionLayout from "@/layouts/SectionLayout.astro";
+
+
+
+const { articles } = Astro.props;
+---
+
+<SectionLayout title="Blog" slotClass="" sectionClass="" mainSection={true}>
+  <div class="grid py-12 gap-x-4 gap-y-8  md:grid-cols-2 w-full">
+    {
+      articles.map(((article: any) => (
+        <ArticleCard 
+        description={article.excerpt}
+        slug={`/blog/${article.slug.current}`}
+        date={article.publishedAt}
+        title={article.title}
+        src={article.coverImage}
+        />
+      )))
+      
+    }
+  </div>
+</SectionLayout>
